@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+    <html>
+
+        <head>
+    		<title>Hello World</title>
+
+    	</head>
+
+    	<body>
+            <script  src="../js/three.min.js"></script>
+<!--            <p>Hello World</p>-->
+            <script>
+
+                var scene = new THREE.Scene();
+                var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+
+                camera.position.z = 50;
+
+                var renderer = new THREE.WebGLRenderer();
+
+                renderer.setSize(window.innerWidth, window.innerHeight);
+
+                document.body.appendChild( renderer.domElement );
+
+                var geometry = new THREE.BoxGeometry( 10, 10, 10 );
+                var material = new THREE.MeshNormalMaterial();
+
+                var geometry2 = new THREE.CylinderGeometry( 5, 5, 20, 32);
+
+                var cube1 = new THREE.Mesh( geometry, material );
+                var cube2 = new THREE.Mesh( geometry, material );
+
+                var cyl = new THREE.Mesh( geometry2, material);
+                var cyl2 = new THREE.Mesh( geometry2, material);
+
+                var animate = function (){
+                    requestAnimationFrame( animate );
+                    cube1.rotation.x += 0.01;
+                    cube1.rotation.y += 0.01;
+                    cube1.rotation.z += 0.01;
+                    cube2.rotation.x -= 0.02;
+                    cube2.rotation.y -= 0.02;
+                    cube2.rotation.z -= 0.02;
+                    cyl.rotation.x += 0.01;
+                    cyl.rotation.y += 0.01;
+                    cyl.rotation.z += 0.01;
+                    cyl2.rotation.x -= 0.02;
+                    cyl2.rotation.y -= 0.02;
+                    cyl2.rotation.z -= 0.02;
+
+                    renderer.render (scene, camera);
+                };
+
+                animate();
+
+                scene.add( cube1, cube2, cyl, cyl2 );
+
+            </script>
+    	</body>
+    </html>
