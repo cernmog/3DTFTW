@@ -2,8 +2,8 @@ myArr = [];
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.z = 10;
-camera.position.y = 2;
+camera.position.z = 4;
+camera.position.y = 1;
 camera.rotation.x = -0.2;
 
 
@@ -23,9 +23,9 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap; //default
 
 
 
-//var lightAmb = new THREE.AmbientLight( 0x803020, 0.3x );
+//var lightAmb = new THREE.AmbientLight( 0xffffff, 0.3x );
 
-var light1 = new THREE.DirectionalLight(0x09f7f3, 1);
+var light1 = new THREE.DirectionalLight(0xffffff, 1);
 light1.position.set(0, 10, 0);
 light1.castShadow = true;
 
@@ -33,13 +33,15 @@ light1.castShadow = true;
 //light2.position.set(-50, 30, 0);
 //light2.castShadow = false;
 
-scene.add(light1);
+
 
 
 light1.shadow.mapSize.width = 512; //default values!!! 
 light1.shadow.mapSize.height = 512;
 light1.shadow.camera.near = 0.5;
 light1.shadow.camera.far = 500;
+
+scene.add(light1);
 
 
 //var geometry = new THREE.BoxGeometry( 10, 10, 10 );
@@ -54,7 +56,7 @@ light1.shadow.camera.far = 500;
 //var cyl2 = new THREE.Mesh( geometry2, material);
 
 var planeGeometry = new THREE.PlaneGeometry (20, 20, 10, 10);
-var planeMaterial = new THREE.MeshStandardMaterial({color: 0xfff00});
+var planeMaterial = new THREE.MeshStandardMaterial({color: 0xfff000});
 var plane = new THREE.Mesh(planeGeometry, planeMaterial);
 plane.receiveShadow = true;
 
@@ -145,7 +147,7 @@ class Tor{
 
 class Knot{
     constructor(posX, posY){
-        this.geometryKnot = new THREE.TorusKnotGeometry(1, 0.25, 100, 16);
+        this.geometryKnot = new THREE.TorusKnotGeometry(0.5, 0.25, 100, 16);
         this.materialKnot = new THREE.MeshStandardMaterial({color: 0xffff00}); 
         this.mesh = new THREE.Mesh(this.geometryKnot, this.materialKnot); 
         
@@ -162,10 +164,10 @@ class Knot{
     }
 } 
 
-var knotOne = new Knot(0, 3);
-var knotTwo = new Knot(-2, 3);
-var knotThree = new Knot(2, 3); 
-var knotFour = new Knot(-6, 3);
+var knotOne = new Knot(0, 1);
+var knotTwo = new Knot(-2, 1);
+var knotThree = new Knot(2, 1); 
+//var knotFour = new Knot(-6, 1);
 
 
 function getRandomInt(max) {
@@ -228,7 +230,7 @@ var animate = function (){
     knotOne.Spin(0.01); 
     knotTwo.Spin(0.012);
     knotThree.Spin(0.014);
-    knotFour.Spin(0.016);
+//    knotFour.Spin(0.016);
 
     renderer.render (scene, camera);
 
