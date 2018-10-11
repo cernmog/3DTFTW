@@ -25,6 +25,8 @@ var planeGeometry = new THREE.PlaneGeometry (50, 20, 1, 1);
 var planeMaterial = new THREE.MeshStandardMaterial({color: 0xffff00});
 var plane = new THREE.Mesh(planeGeometry, planeMaterial);
 
+var plane 
+
 cube1.position.x =- 15;
 cyl.position.x =- 15;
 
@@ -125,6 +127,11 @@ scene.add(lightAmb, light1, light2);
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
+
+//ADDS FOG mate
+scene.fog = new THREE.FogExp2(0x19cfe8, 100, 1100); 
+
+
 
 // class Entity{
 //   constructor(geometry){
