@@ -19,8 +19,6 @@ document.body.appendChild( renderer.domElement );
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap; //default
 
-//var lightAmb = new THREE.AmbientLight( 0xffffff, 0.3x );
-
 var light1 = new THREE.DirectionalLight(0x9700FF, 1);
 light1.position.set(10, 10, 0);
 light1.castShadow = true;
@@ -120,6 +118,33 @@ scene.add( plane );
 // };
 
 // KEY CODES FOR WINDOWS = 38,40,37,39,32
+
+class Entity {
+  constructor(){
+
+  }
+
+  Update(){
+
+  }
+
+  Reset(){
+
+  }
+}
+
+class Obstacle extends Entity{
+  constructor(){
+    // console.log("Obstacle() constructor");
+    super();
+  }
+  Reset(){
+    super.Reset();
+  }
+  Update(){
+    super.Update();
+  }
+}
 
 
 
