@@ -4,7 +4,7 @@ myCubes = [];
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.z = 6;
+camera.position.z = 80;
 camera.position.y = 1;
 camera.rotation.x = -0.2;
 
@@ -35,19 +35,67 @@ light1.shadow.mapSize.height = 512; //
 light1.shadow.camera.near = 0.5;
 light1.shadow.camera.far = 500;
 
-scene.add(light1, light2);
+// scene.add(light1, light2);
 
-var planeGeometry = new THREE.PlaneGeometry (20, 20, 10, 10);
-var planeMaterial = new THREE.MeshStandardMaterial({color: 0xD08CFF});
-var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-plane.receiveShadow = true;
+class Entity {
+  constructor(){
+  }
 
-plane.position.x=0;
-plane.position.y= -2;
-plane.position.z=0;
-plane.rotation.x = -1.570;
+  Update(){
 
-scene.add( plane );
+  }
+
+  Reset(){
+
+  }
+}
+
+class Environment extends Entity{
+  constructor(){
+    super();
+    this.size = 0;
+    this.collidable = false;
+
+			this.geometry = new THREE.PlaneGeometry( 100, 100, 50, 50 );
+			// this.material = new THREE.MeshBasicMaterial({color: 0xD08CFF});
+
+			this.mesh = new THREE.Mesh( this.geometry, this.material );
+
+      this.mesh.receiveShadow = true;
+
+			this.mesh.position.x = this.mesh.position.z = 0;
+
+      this.mesh.position.y = -2;
+
+	    this.mesh.rotation.set(Math.PI * -0.5, 0, 0);
+
+      // this.material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
+
+      for ( var i = 0; i < this.geometry.vertices.length; i ++ ) {  //COUNTS THROUGH VERTICIES ARRAY FOR PLANE
+          var vertex = this.geometry.vertices[i];
+          vertex.x += ( Math.random() * 30 ) - 15;
+          vertex.y += ( Math.random() * 30 ) - 15;
+          vertex.z += ( Math.random() * 3 ) - 15;
+          this.material = new THREE.MeshStandardMaterial( { vertexColors: THREE.VertexColors } );
+	    }
+
+      for ( var i = 0, l = this.geometry.faces.length; i < l; i++ ) {
+
+        var face = this.geometry.faces[ i ];
+	      face.vertexColors[ 0 ] = new THREE.Color().setRGB( Math.random(), Math.random(), Math.random());
+	      face.vertexColors[ 1 ] = new THREE.Color().setRGB( Math.random(), Math.random(), Math.random());
+	      face.vertexColors[ 2 ] = new THREE.Color().setRGB( Math.random(), Math.random(), Math.random());
+
+	     }
+
+			scene.add( this.mesh );
+		}
+
+	    Update() {
+        super.Update();
+	    }
+}
+
 
 class Service{
     constructor(){
@@ -85,20 +133,6 @@ class KeyboardService extends Service{
         return this.keys[keyCode];
     }
 };
-
-
-class Entity {
-  constructor(){
-  }
-
-  Update(){
-
-  }
-
-  Reset(){
-
-  }
-}
 
 class Knot extends Entity{
     constructor(posX, posY, rate){
@@ -183,7 +217,7 @@ class Box extends Entity{
         super.Update();
         if ( this.CollideWithObstacle() )
           {
-            //   console.log(" ------ CRASH ------- ");
+              // console.log(" ------ CRASH ------- ");
           }
           this.mesh.rotation.y += this.rate;
         }
@@ -191,7 +225,7 @@ class Box extends Entity{
 }
 
 class Avatar extends Entity{
-    constructor(posX, posY, rate, colFam){
+    constructor(posX, posY, rate){
         super();
         this.collidable = false;
         this.size = 1.0;
@@ -207,6 +241,8 @@ class Avatar extends Entity{
         this.mesh.receiveShadow = false;
 
         this.rate = rate;
+
+        this.shields = 150;
 
         scene.add(this.mesh);
     }
@@ -276,48 +312,52 @@ class Avatar extends Entity{
 
         if ( this.CollideWithObstacle() )
           {
-              console.log(" ------ I DIED ------- ");
+            if (this.shields > 0){
+            this.shields--;  //decrementing the DOM element sheilds
+            console.log(" ------ BANG ------- ");
+
+            var dead = false;
+          }
+
+            else if(dead = true) {
+
+              document.getElementById("hud_shields").style.visibility = "hidden";
+
+              document.getElementById("dead").style.visibility = "visible";
+
+              console.log(" ------ DEAD ------- ");
+
+            }
             }
 
           this.Move()
+
+          document.getElementById('hud_distance').innerHTML = (this.mesh.position.y/1000).toFixed(2) + " km";
+
+          document.getElementById('hud_shields').innerHTML = (this.shields).toFixed(2) + " %";
+
+          this.mesh.rotation.y -= this.rate;
 
     }
 
 }
 
-
-// class Enemy extends Avatar{
-//     constructor(posX, posY, rate){
-//         super();
-//         this.material = new THREE.MeshStandardMaterial({color: 0xd62515});
-//     }
-//     Update(){
-//         super.Update();
-//     }
-//     Reset(){
-//         super.Reset();
-//     }
+// var mainGuy = new Avatar(-3, 0, 0.02);
+// myCubes.push(mainGuy);
+//
+//
+// for (let i=0; i<4; i++){
+//     myCubes.push(new Box(i, 0, 0.02));
 // }
-
-// var theVillan = new Enemy(3, -0.5, 0.1);
-
-// var chara = new Avatar(0, 0, 0.05);
-// var charaTwo = new Avatar(3, 0, 0.1);
-
-var mainGuy = new Avatar(-3, 0, 0.02);
-myCubes.push(mainGuy);
-
-
-for (let i=0; i<4; i++){
-    myCubes.push(new Box(i, 0, 0.02));
-}
 
 var keyboard = new KeyboardService();
 
-for (let i=0; i<5; i++){
-    var myKnot = new Knot(i+1, 2, 0.01);
-    myArr.push(myKnot); 
-}
+// for (let i=0; i<5; i++){
+//     var myKnot = new Knot(i+1, 2, 0.01);
+//     myArr.push(myKnot);
+// }
+
+new Environment();
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
@@ -332,16 +372,6 @@ var animate = function (){
     for (let i = 0; i<myCubes.length; i++){
         myCubes[i].Update();
     }
-
-    // for (let i = 0; i<myCubes.length; i++){
-        // myCubes[i].Spin();
-
-        // myCubes[i].Update();
-        // myCubes[i].CollidedWithObstacle(true);
-    // }
-
-    // mainGuy.Move();
-    // mainGuy.DistanceTo(3, 0);
 
     renderer.render (scene, camera);
 
