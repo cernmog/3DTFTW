@@ -43,8 +43,8 @@ GameFlowState = {
     INITIALISE : 1,
     GAMESTART : 2,
     GAMEPLAY : 3,
-    TALLY : 4 
-}; 
+    TALLY : 4
+};
 
 class Entity {
   constructor(){
@@ -72,37 +72,37 @@ class GameFlow{
             case GameFlowState.INITIALISE:
             document.getElementById("intro_ok_button").onclick = function(){ //adds a callback to wait for the player to click on a specific button
                 document.getElementById("intro_ui").style.display = 'none';
-                gameFlow.currentState = GameFlowState.GAMESTART; 
+                gameFlow.currentState = GameFlowState.GAMESTART;
             }
             document.getElementById("intro_ui").style.display = 'block'; //makes the intro user interface visible
-            gameFlow.currentState = GameFlowState.UNKNOWN; // updates the gameflow state to UNKNOWN, which has no code associated with it 
+            gameFlow.currentState = GameFlowState.UNKNOWN; // updates the gameflow state to UNKNOWN, which has no code associated with it
             mainGuy.Reset();
             break;
-            
+
             case GameFlowState.UNKNOWN:
             break;
-            
+
             case GameFlowState.GAMESTART:
-            mainGuy.shields = 100;   
-            gameFlow.currentState = GameFlowState.GAMEPLAY; 
+            mainGuy.shields = 100;
+            gameFlow.currentState = GameFlowState.GAMEPLAY;
             break;
 
             case GameFlowState.GAMEPLAY:
-            
+
             if (mainGuy.shields <=  0 ){
-                gameFlow.currentState = GameFlowState.TALLY;  
+                gameFlow.currentState = GameFlowState.TALLY;
             }
-            break; 
+            break;
 
             case GameFlowState.TALLY:
             document.getElementById("tally_ok_button").onclick = function(){
-                document.getElementById("tally_ui").style.display = 'none'; 
+                document.getElementById("tally_ui").style.display = 'none';
                 gameFlow.currentState = GameFlowState.INITIALISE;
             }
             document.getElementById("tally_ui").style.display = 'block';
             gameFlow.currentState = GameFlowState.UNKNOWN;
-            console.log(mainGuy.shields); 
-            break; 
+            console.log(mainGuy.shields);
+            break;
         }
 
     }
@@ -157,7 +157,7 @@ class KeyboardService extends Service{
         return this.keys[keyCode];
     }
 };
- 
+
 
 class Knot extends Entity{
     constructor(posX, posY, rate){
@@ -187,21 +187,24 @@ class Knot extends Entity{
 }
 
 class Box extends Entity{
-    constructor(posX, posY, rate){
+    constructor(posY, posZ, rate){
         super();
         this.collidable = true;
-        this.size = 0.5;  //THE HITBOX OF CHARACTER
+        this.size = 0.5;  //THE HITBOX OF OTHER BOXES
         this.geometry = new THREE.BoxGeometry(1,1,1);
         this.material = new THREE.MeshStandardMaterial({color: 0xFF6A00});
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-        this.mesh.position.x = posX;
+        this.mesh.position.x = getRandomFloat(-3, 6);
         this.mesh.position.y = posY;
+        this.mesh.position.z = posZ;
+
+        this.starting = posZ;
 
         this.mesh.castShadow = true; //default values
         this.mesh.receiveShadow = false;
 
-        this.rate = rate;
+        this.rate = getRandomFloat(0.01, 0.1);
 
         scene.add(this.mesh);
     }
@@ -236,6 +239,7 @@ class Box extends Entity{
     }
     Reset(){
         super.Reset();
+
     }
 
     Update(){
@@ -244,9 +248,18 @@ class Box extends Entity{
           {
               // console.log(" ------ CRASH ------- ");
           }
-          this.mesh.rotation.y += this.rate;
-        }
 
+          this.mesh.rotation.y += this.rate;
+          this.mesh.position.z += this.rate;
+
+          if (this.mesh.position.z >= 7){ //when the subes start loopoing
+            this.mesh.position.z = this.starting; //starting position
+            this.mesh.position.x = getRandomFloat(-6, 6);
+          }
+          this.mesh.rotation.x -= this.rate; //ROTATES THE CUBES
+          this.mesh.rotation.y -= this.rate;
+          this.mesh.rotation.z -= this.rate;
+        }
 }
 
 class Avatar extends Entity{
@@ -256,7 +269,7 @@ class Avatar extends Entity{
         this.size = 0.5;  //THE HITBOX OF CHARACTER
 
         this.geometry = new THREE.BoxGeometry(1,1,1);
-        this.material = new THREE.MeshStandardMaterial({color: 0xFF6A00});
+        this.material = new THREE.MeshStandardMaterial({color: 0x1db4f9});
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
         this.mesh.position.x = posX;
@@ -269,11 +282,13 @@ class Avatar extends Entity{
 
         this.shields = 100;
 
+        this.dead = false;
+
         scene.add(this.mesh);
     }
 
     Move(){
-      var controlSpeed  = 0.05;
+      var controlSpeed  = 0.08;
       //upArrow
       if (keyboard.IsKeydown(38) == true) {
           this.mesh.position.y += controlSpeed;
@@ -283,17 +298,21 @@ class Avatar extends Entity{
       } // A - move left
       if (keyboard.IsKeydown(65) == true) {
           this.mesh.position.x -= controlSpeed;
+          this.mesh.rotation.z += this.rate; //ROLL LEFT
       } // D - move right
       if (keyboard.IsKeydown(68) == true) {
           this.mesh.position.x += controlSpeed;
+          this.mesh.rotation.z -= this.rate; //ROLL RIGHT
         }
         // W Key - move futher away
       if (keyboard.IsKeydown(87) == true){
         this.mesh.position.z -= controlSpeed;
+        this.mesh.rotation.x -= this.rate; //ROLL FORWARD
       } // S Key - move closer
       if (keyboard.IsKeydown(83) == true){
         this.mesh.position.z += controlSpeed;
-      }  
+        this.mesh.rotation.x += this.rate; //ROLL BACK
+      }
     }
 
     DistanceTo(x, z) {
@@ -345,12 +364,10 @@ class Avatar extends Entity{
 
             document.getElementById("hud_shields").style.visibility = "visible";
 
-            var dead = false;
-
-            console.log(this.shields); 
+            console.log(this.shields);
           }
 
-            else if(dead = true) {
+            else if(this.dead = true) {
 
               document.getElementById("hud_shields").style.visibility = "hidden";
 
@@ -367,18 +384,21 @@ class Avatar extends Entity{
 
           document.getElementById("hud_shields").innerHTML = "SHIELDS " + (this.shields).toFixed(2) + " %";
 
-          this.mesh.rotation.y -= this.rate;
+          // this.mesh.rotation.x += this.rate; //rotation stuff
 
     }
 
 }
 
-var mainGuy = new Avatar(-3, 0, 0.02);
+function getRandomFloat(min, max) { //random float between the MIN and MAX
+  return Math.random() * (max - min)+min;
+}
+
+var mainGuy = new Avatar(-3, 0, 0.1);
 myCubes.push(mainGuy);
 
-
-for (let i=0; i<4; i++){
-    myCubes.push(new Box(i, 0, 0.02));
+for (let i=0; i<6; i++){
+    myCubes.push(new Box(0, -5, 0.1));
 }
 
 var keyboard = new KeyboardService();
@@ -388,11 +408,7 @@ for (let i=0; i<5; i++){
     myArr.push(myKnot);
 }
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-var gameFlow = new GameFlow(); 
+var gameFlow = new GameFlow();
 
 
 // ADDS FOG mate
@@ -409,7 +425,7 @@ var animate = function (){
         myArr[i].Update();
     }
 
-    gameFlow.Update();     
+    gameFlow.Update();
 
     renderer.render (scene, camera);
 
