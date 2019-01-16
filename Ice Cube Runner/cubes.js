@@ -599,6 +599,12 @@ class Avatar extends Entity{  //creates the playable character
         this.mesh.position.z += controlSpeed;
         this.mesh.rotation.x += this.rate; //ROLL BACK
       }
+      if (keyboard.IsKeydown(38) == true){
+        this.mesh.position.y += controlSpeed;
+      }
+      if (keyboard.IsKeydown(40) == true){
+        this.mesh.position.y -= controlSpeed;
+      }
     }
 
     DistanceTo(x, z) { //calculates the distance to a set position (mainly used for testing)
@@ -739,7 +745,16 @@ class sideDetail extends Entity {  //created the side detail on left and right
     this.randH = getRandomFloat(0.01, 50);
     this.randD = getRandomFloat(0.05, 5);
     this.geometry = new THREE.BoxGeometry(this.randW, this.randH, this.randD); //width, height, depth
-    this.material = new THREE.MeshStandardMaterial({color: 0xD08CFF, opacity: (getRandomFloat(0.4, 1)), transparent: true});
+    
+    
+    
+    
+    this.material = new THREE.MeshStandardMaterial({color: 0x00FF00, opacity: (getRandomFloat(0.4, 1)), transparent: true});
+    
+    
+    
+    
+    
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
     this.mesh.position.x = posX;
