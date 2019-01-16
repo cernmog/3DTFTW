@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+    <html>
+
+      <head>
+    		<title>GAME V1.3</title>
+
+        <link rel="stylesheet" type="text/css" href="main.css" media="screen"/>
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    	</head>
+
+    	<body>
+            <script  src="./three.min.js"></script>
+
+            <div id="hud_distance"></div>
+
+            <div id="hud_shields"><!-- This is the sheilds:  --></div>
+
+            <div id="speed_Up">SPEED UP!</div>
+
+            <div id="health_Get">HEALTH +10</div>
+
+            <div class = "ui_overlay" id = "intro_ui">
+            <h1 align="center">Ice Cube Runner</h1>
+                <p style="text-align:center; float:center;">Avoid the other ice cubes, otherwise you'll break! How far can you get?</p>
+                <h1></h1>
+                <div class = "clickable_group">
+                  <button class = "clickable" id = "intro_ok_button">Start</button>
+                </div>
+            </div>
+
+            <div class = "ui_overlay" id = "controls_ui">
+            <h1 align="center">Controls</h1>
+                <ul>
+                  <li>WASD keys to move</li>
+                  <li>SPACE key to toggle pause</li>
+                  <li><span class = "green_cube">Green cubes</span> heal you</li>
+                  <li>Avoid <span class = "red_cube">red cubes</span>, they speed you up</li>
+                </ul>
+                <h1></h1>
+                <div class = "clickable_group">
+                  <button class = "clickable" id = "controls_ok_button">Got it</button>
+                </div>
+            </div>
+
+            <div class = "ui_overlay" id = "tally_ui">
+            <h1 align="center">You shattered</h1>
+            <h1 align="center">GAME OVER</h1>
+            <div id = "tally_text">
+              <h2 style="text-align:center;float:center;">Your score:</h2>
+              <h2 style="text-align:center;float:center;" id = "tally_score"> score here! </h2>
+            </div>
+                <div class = "clickable_group">
+                  <button class = "clickable" id = "tally_ok_button">Try again?!</button>
+                </div>
+            </div>
+
+            <div class = "ui_overlay" id = "paused_ui">
+              <h1 align="center">PAUSED</h1>
+              <div id = "tally_text">
+                <h2 style="text-align:center;">Press Space to Continue</h2>
+              </div>
+            </div>
+
+            <script src="./cubes.js"></script>
+    	</body>
+    </html>

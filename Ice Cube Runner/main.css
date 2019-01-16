@@ -1,0 +1,211 @@
+body {
+  font-size: 3vw;
+  font-family:  monospace;
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  border: 0;
+  padding: 0;
+
+  display: block;
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  z-index: -9999;
+
+  font-family: 'Roboto', sans-serif;
+}
+
+#hud_distance{
+     display: block;
+     position: fixed;
+
+     color: black;
+
+     top: 5%;
+     right: 5%;
+     z-index: 0;
+
+ }
+
+#hud_shields {
+       display: block;
+       position: fixed;
+
+       color: black;
+
+       top: 5%;
+       left: 5%;
+       z-index: 0;
+
+       /* THIS CHANGES COLOUR SLOWLY */
+       transition: all 1s ease-in-out;
+       -moz-transition: all 1s ease-in-out;
+       -o-transition: all 1s ease-in-out;
+       -ms-transition: all 1s ease-in-out;
+       transition: all 1s ease-in-out;
+   }
+
+#hud_healthUp {
+    display: block;
+    position: fixed;
+
+    visibility: hidden;
+
+    color: black;
+
+    top: 10%;
+    left: 5%;
+    z-index: 0;
+
+    /* THIS CHANGES COLOUR SLOWLY */
+    transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+
+#speed_Up{
+
+  display: block;
+  position: fixed;
+
+  color: red;
+
+  top: 55%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+
+  visibility: visible;
+
+  opacity: 0;
+
+  transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  -ms-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
+
+}
+
+#health_Get{
+
+  display: block;
+  position: fixed;
+
+  color: #00FF00;
+
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+
+  visibility: visible;
+
+  opacity: 0;
+
+  transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  -ms-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
+
+}
+
+#tally_score{
+  /* Adds space between "Your Score:" and actual number */
+    text-align:center;
+}
+
+#tally_text{
+    text-align:center;
+}
+
+.green_cube{
+  color: #00FF00;
+}
+
+.red_cube{
+  color: red;
+}
+
+
+.ui_overlay {
+    display: none;
+
+    position: absolute;
+
+    color: white;
+
+/* ELEMENT IN THE CENTER */
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+
+    background-color: rgba(0,0,0,0.5);
+    padding: 3vh 3vh 3vh 2vw;
+
+    width: 55vw;
+    margin-top: 10vh;
+
+    position: absolute
+
+    transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+
+.clickable_group {
+
+    text-align:center;
+
+}
+
+.clickable {
+   outline:            0;
+   color:              white;
+   background-color:   transparent;
+   border:             0.2vw solid white;
+
+   font-size:          2vh;
+   padding:            1vh 1vw 1vh 1vw;
+   border-radius:      3vw;
+
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.clickable:hover {
+   background-color:   white;
+   color: rgba(0,0,0,1);
+   border: 0.2vw solid white;
+}
+
+.clickable:active {
+   outline: 0;
+   color: #0077ff;
+   background-color: white;
+   border: 0.2vw solid white;
+}
+
+h1{
+    margin: 0;
+    
+}
+
+h2{
+    margin: 0;
+    
+}
+
+
+
+
+
